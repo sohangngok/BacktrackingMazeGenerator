@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Maze
 {
-    public sealed class Cell
+    public sealed class RectangularCell
     {
         public dynamic Content { get; set; }
-        public Cell CellN { get; set; }
-        public Cell CellS { get; set; }
-        public Cell CellW { get; set; }
-        public Cell CellE { get; set; }
+        public RectangularCell CellN { get; set; }
+        public RectangularCell CellS { get; set; }
+        public RectangularCell CellW { get; set; }
+        public RectangularCell CellE { get; set; }
 
-        public Cell(Cell cellN, Cell cellS, Cell cellW, Cell cellE)
+        public RectangularCell(RectangularCell cellN, RectangularCell cellS, RectangularCell cellW, RectangularCell cellE)
         {
             CellN = cellN;
             CellS = cellS;
@@ -20,7 +20,7 @@ namespace Maze
             CellE = cellE;
         }
 
-        public Cell()
+        public RectangularCell()
         {
             CellN = null;
             CellS = null;
@@ -28,7 +28,7 @@ namespace Maze
             CellE = null;
         }
 
-        public void SetNeighbors(Cell cellN, Cell cellS, Cell cellW, Cell cellE)
+        public void SetNeighbors(RectangularCell cellN, RectangularCell cellS, RectangularCell cellW, RectangularCell cellE)
         {
             CellN = cellN;
             CellS = cellS;

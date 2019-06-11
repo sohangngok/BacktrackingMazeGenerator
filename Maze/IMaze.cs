@@ -6,6 +6,6 @@ namespace Maze
 {
     public interface IMaze
     {
-        IMaze GenerateMaze(Random random);
+        IMaze Generate(int startRow, int startCol, Random random);
     }
 }
