@@ -11,11 +11,10 @@ namespace MazeGenTest
         {
             IMaze maze = new RectangularMaze(4, 5);
             System.Console.WriteLine(maze.ToString());
-            Assert.AreEqual("(    )(    )(    )(    )\n" +
-                "(    )(    )(    )(    )\n" +
-                "(    )(    )(    )(    )\n" +
-                "(    )(    )(    )(    )\n" +
-                "(    )(    )(    )(    )\n", 
+            Assert.AreEqual("(    )(    )(    )(    )(    )\n" +
+                "(    )(    )(    )(    )(    )\n" +
+                "(    )(    )(    )(    )(    )\n" +
+                "(    )(    )(    )(    )(    )\n", 
                 maze.ToString());
         }
 

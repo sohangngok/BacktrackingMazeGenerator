@@ -12,7 +12,7 @@ namespace Maze
         /// Grid on an (x, y) coordinate plane. Top left is the origin.
         /// x increases when heading east. y increases when heading south.
         /// </summary>
-        public RectangularCell[,] Cells { get; }
+        public Cell[,] Cells { get; }
 
         private Dictionary<Direction, int> DirectionX = new Dictionary<Direction, int>
         {
@@ -43,12 +43,12 @@ namespace Maze
             Width = width;
             Height = height;
             //init cells
-            Cells = new RectangularCell[Height, Width];
+            Cells = new Cell[Height, Width];
             for (int row = 0; row < Height; row++)
             {
                 for (int col = 0; col < Width; col++)
                 {
-                    Cells[row, col] = new RectangularCell();
+                    Cells[row, col] = new Cell();
                 }
             }
             //Cells[0, 0].SetNeighbors(null, Cells[1, 0], null, Cells[0, 1]);
@@ -72,21 +72,21 @@ namespace Maze
         {
             carvePassagesFrom(startX, startY, random);
             
-            return null;
+            return this;
         }
 
         public override string ToString()
         {
             string str = "";
-            for (int y = 0; y < Height; y++)
+            for (int row = 0; row < Height; row++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int col = 0; col < Width; col++)
                 {
                     str += "(";
-                    str += Cells[y, x].CellN != null ? "N" : " ";
-                    str += Cells[y, x].CellS != null ? "S" : " ";
-                    str += Cells[y, x].CellW != null ? "W" : " ";
-                    str += Cells[y, x].CellE != null ? "E" : " ";
+                    str += Cells[row, col].Neighbors[Direction.N] != null ? "N" : " ";
+                    str += Cells[row, col].Neighbors[Direction.S] != null ? "S" : " ";
+                    str += Cells[row, col].Neighbors[Direction.W] != null ? "W" : " ";
+                    str += Cells[row, col].Neighbors[Direction.E] != null ? "E" : " ";
                     str += ")";
                 }
                 str += "\n";
@@ -108,16 +108,26 @@ namespace Maze
                     continue;
                 }
 
-                //if ()
+                foreach (var item in Cells[nextY, nextX].Neighbors)
+                {
+                    if (item.Value != null) //has been visited
+                    {
+                        continue;
+                    }
+                }
+
+                Cells[curY, curX].Neighbors[dir] = Cells[nextY, nextX];
+                Cells[nextY, nextX].Neighbors[Opposite[dir]] = Cells[curY, curX];
+                carvePassagesFrom(nextX, nextY, random);
             }
         }
 
         private bool IsOutOfBounds(int x, int y)
         {
-            if (x < 0 || x >= Width)
+            if (x < 0 || x >= Height)
                 return true;
 
-            if (y < 0 || y >= Height)
+            if (y < 0 || y >= Width)
                 return true;
 
             return false;

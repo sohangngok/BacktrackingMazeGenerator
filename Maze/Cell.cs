@@ -4,36 +4,28 @@ using System.Text;
 
 namespace Maze
 {
-    public sealed class RectangularCell
+    public sealed class Cell
     {
         public dynamic Content { get; set; }
-        public RectangularCell CellN { get; set; }
-        public RectangularCell CellS { get; set; }
-        public RectangularCell CellW { get; set; }
-        public RectangularCell CellE { get; set; }
+        public Dictionary<Direction, Cell> Neighbors { get; }
 
-        public RectangularCell(RectangularCell cellN, RectangularCell cellS, RectangularCell cellW, RectangularCell cellE)
+        public Cell()
         {
-            CellN = cellN;
-            CellS = cellS;
-            CellW = cellW;
-            CellE = cellE;
+            Neighbors = new Dictionary<Direction, Cell>
+            {
+                { Direction.N, null },
+                { Direction.S, null },
+                { Direction.W, null },
+                { Direction.E, null }
+            };
         }
 
-        public RectangularCell()
-        {
-            CellN = null;
-            CellS = null;
-            CellW = null;
-            CellE = null;
-        }
-
-        public void SetNeighbors(RectangularCell cellN, RectangularCell cellS, RectangularCell cellW, RectangularCell cellE)
-        {
-            CellN = cellN;
-            CellS = cellS;
-            CellW = cellW;
-            CellE = cellE;
-        }
+        //public void SetNeighbors(Cell neighborN, Cell neighborS, Cell neighborW, Cell neighborE)
+        //{
+        //    NeighborN = neighborN;
+        //    NeighborS = neighborS;
+        //    NeighborW = neighborW;
+        //    NeighborE = neighborE;
+        //}
     }
 }
