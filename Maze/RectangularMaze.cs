@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Maze
 {
+    /// <summary>
+    /// Sources: http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
+    /// https://gist.github.com/anonymous/828805
+    /// </summary>
     public class RectangularMaze : IMaze
     {
         public int Width { get; }
