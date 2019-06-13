@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Maze
 {
     public interface IMaze
     {
+        int Width { get; }
+        int Height { get; }
+        Cell[,] Cells { get; }
         IMaze Generate(int startRow, int startCol, Random random);
     }
 }

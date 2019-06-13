@@ -6,8 +6,8 @@ namespace Maze
 {
     public class RectangularMaze : IMaze
     {
-        public readonly int Width;
-        public readonly int Height;
+        public int Width { get; }
+        public int Height { get; }
         /// <summary>
         /// Grid on an (x, y) coordinate plane. Top left is the origin.
         /// x increases when heading east. y increases when heading south.
@@ -51,26 +51,11 @@ namespace Maze
                     Cells[row, col] = new Cell();
                 }
             }
-            //Cells[0, 0].SetNeighbors(null, Cells[1, 0], null, Cells[0, 1]);
-            //Cells[0, width - 1].SetNeighbors(null, Cells[1, width - 1], Cells[0, width - 2], null);
-            //Cells[height - 1, 0].SetNeighbors(Cells[height - 2, 0], null, null, Cells[height - 1, 1]);
-            //Cells[height - 1, width - 1].SetNeighbors(Cells[height - 2, width - 1], null, Cells[height - 1, width - 2], null);
-
-            //for (int row = 0; row < height; row++)
-            //{
-            //    for (int col = 0; col < width; col++)
-            //    {
-            //        cells[row, col].celln = row - 1 >= 0 ? cells[row - 1, col] : null;
-            //        cells[row, col].cells = row + 1 < height ? cells[row + 1, col] : null;
-            //        cells[row, col].cellw = col - 1 >= 0 ? cells[row, col - 1] : null;
-            //        cells[row, col].celle = col + 1 < row ? cells[row, col + 1] : null;
-            //    }
-            //}
         }
 
         public IMaze Generate(int startX, int startY, Random random)
         {
-            carvePassagesFrom(startX, startY, random);
+            CarvePassagesFrom(startX, startY, random);
             
             return this;
         }
@@ -78,23 +63,30 @@ namespace Maze
         public override string ToString()
         {
             string str = "";
+            //Top line
+            str += " ";
+            for (int col = 0; col < Width; col++)
+            {
+                str += " _";
+            }
+            str += "\n";
             for (int row = 0; row < Height; row++)
             {
+                str += " |";
                 for (int col = 0; col < Width; col++)
                 {
-                    str += "(";
-                    str += Cells[row, col].Neighbors[Direction.N] != null ? "N" : " ";
-                    str += Cells[row, col].Neighbors[Direction.S] != null ? "S" : " ";
-                    str += Cells[row, col].Neighbors[Direction.W] != null ? "W" : " ";
-                    str += Cells[row, col].Neighbors[Direction.E] != null ? "E" : " ";
-                    str += ")";
+                    var s = Cells[row, col].Neighbors[Direction.S] == null ? "_" : " ";
+                    str += s;
+
+                    s = Cells[row, col].Neighbors[Direction.E] == null ? "|" : " ";
+                    str += s;
                 }
                 str += "\n";
             }
             return str;
         }
 
-        private void carvePassagesFrom(int curX, int curY, Random random)
+        private void CarvePassagesFrom(int curX, int curY, Random random)
         {
             var direcitonList = Enum.GetValues(typeof(Direction)).Cast<Direction>().ToList<Direction>();
             var shuffleDirections = direcitonList.OrderBy(a => random.Next()).ToList();
@@ -103,33 +95,46 @@ namespace Maze
                 var nextX = curX + DirectionX[dir];
                 var nextY = curY + DirectionY[dir];
 
+                //debug
+                //Console.WriteLine("(" + curX + ", " + curY + ") to (" + nextX + ", " + nextY + ")");
+
                 if (IsOutOfBounds(nextX, nextY))
                 {
                     continue;
                 }
 
-                foreach (var item in Cells[nextY, nextX].Neighbors)
+                if (HasNeighbor(nextX, nextY))
                 {
-                    if (item.Value != null) //has been visited
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 Cells[curY, curX].Neighbors[dir] = Cells[nextY, nextX];
                 Cells[nextY, nextX].Neighbors[Opposite[dir]] = Cells[curY, curX];
-                carvePassagesFrom(nextX, nextY, random);
+                //debug //Console.WriteLine(this.ToString());
+                CarvePassagesFrom(nextX, nextY, random);
             }
         }
 
         private bool IsOutOfBounds(int x, int y)
         {
-            if (x < 0 || x >= Height)
+            if (x < 0 || x >= Width)
                 return true;
 
-            if (y < 0 || y >= Width)
+            if (y < 0 || y >= Height)
                 return true;
 
+            return false;
+        }
+
+        private bool HasNeighbor(int x, int y)
+        {
+            foreach (KeyValuePair<Direction, Cell> item in Cells[y, x].Neighbors)
+            {
+                if (item.Value != null) //has been visited
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

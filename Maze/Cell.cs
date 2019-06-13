@@ -19,13 +19,5 @@ namespace Maze
                 { Direction.E, null }
             };
         }
-
-        //public void SetNeighbors(Cell neighborN, Cell neighborS, Cell neighborW, Cell neighborE)
-        //{
-        //    NeighborN = neighborN;
-        //    NeighborS = neighborS;
-        //    NeighborW = neighborW;
-        //    NeighborE = neighborE;
-        //}
     }
 }
